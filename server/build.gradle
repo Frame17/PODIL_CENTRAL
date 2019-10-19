@@ -1,16 +1,38 @@
-plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
-}
-
 group 'org.podil.central'
 version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.0"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:1.3.0"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.9.RELEASE"
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
+apply plugin: 'kotlin'
+apply plugin: "kotlin-spring"
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.SR2'
+    }
+}
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.0"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 compileKotlin {
