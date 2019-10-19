@@ -1,5 +1,10 @@
+import os
 from flask import Blueprint
 
-telegram = Blueprint('telegram', __name__)
+from .PCBot import PCBot
 
-from . import routes
+telegram = Blueprint('telegram', __name__)
+bot = PCBot(os.getenv('BOT_TOKEN'))
+bot.set_webhook(os.getenv('NGROK_URL') + '/telegram/web_hook/')
+
+from . import routes, handlers

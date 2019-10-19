@@ -1,6 +1,13 @@
 import os
+import logging
 
 from flask import Flask
+
+
+def configure_logging():
+    # register root logging
+    logging.basicConfig(level=logging.DEBUG)
+    logging.getLogger('werkzeug').setLevel(logging.INFO)
 
 
 def create_app():
@@ -8,7 +15,9 @@ def create_app():
 
     # app.config.from_object(os.getenv("APP_SETTINGS", 'config.DevConfig'))
 
-    from . bot import telegram
+    configure_logging()
+
+    from .bot import telegram
 
     app.register_blueprint(telegram)
 
