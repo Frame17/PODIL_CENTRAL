@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: podil
+      POSTGRES_PASSWORD: central
+      POSTGRES_DB: podil_central
+    ports:
+      - 5432:5432
