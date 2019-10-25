@@ -7,6 +7,8 @@ import javax.persistence.Table
 @Entity
 @Table(name = "cards")
 data class CardEntity(
-    @Id val id: String,
+    @Id val id: Long,
+    val userId: Long,
+    val pin: Int,
     val balance: Long
 )

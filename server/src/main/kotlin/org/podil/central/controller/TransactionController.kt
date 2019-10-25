@@ -2,7 +2,6 @@ package org.podil.central.controller
 
 import org.podil.central.infrastructure.TransactionService
 import org.podil.central.model.WithdrawRequest
-import org.podil.central.model.WithdrawResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,6 +14,6 @@ class TransactionController @Autowired constructor(
 ) {
 
     @PostMapping("withdraw")
-    fun withdraw(@Valid @RequestBody request: WithdrawRequest): WithdrawResponse =
+    fun withdraw(@Valid @RequestBody request: WithdrawRequest) =
         transactionService.withdraw(request)
 }

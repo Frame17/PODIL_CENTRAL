@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
+import java.util.*
 import javax.validation.constraints.Min
 
 @Repository
@@ -16,7 +17,7 @@ interface CardRepository : CrudRepository<CardEntity, Long> {
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update CardEntity c set c.balance = ?2 where c.id = ?1")
-    fun updateCardById(id: String, @Min(0L) balance: Long)
+    fun updateCardById(id: Long, @Min(0L) balance: Long)
 
-    fun findCardById(id: String): CardEntity
+    fun findAllByUserId(id: Long): Optional<List<CardEntity>>
 }

@@ -1,6 +1,6 @@
 package org.podil.central.model
 
 data class Card(
-    val id: String,
+    val id: Long,
     var balance: Long
 )
