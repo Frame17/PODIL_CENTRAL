@@ -19,5 +19,5 @@ interface CardRepository : CrudRepository<CardEntity, Long> {
     @Query("update CardEntity c set c.balance = ?2 where c.id = ?1")
     fun updateCardById(id: Long, @Min(0L) balance: Long)
 
-    fun findAllByUserId(id: Long): Optional<List<CardEntity>>
+    fun findAllByUserId(id: Int): Optional<List<CardEntity>>
 }

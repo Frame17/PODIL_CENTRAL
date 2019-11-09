@@ -4,6 +4,7 @@ const val CARD_NOT_FOUND = "Card Not Found"
 const val LOW_BALANCE = "Low Balance"
 const val WRONG_PIN = "Wrong Pin"
 const val USER_NOT_FOUND = "User Not Found"
+const val USER_ALREADY_REGISTERED = "User Already Registered"
 
 data class AuthorizationResponse(
     val success: Boolean,
@@ -38,5 +39,10 @@ data class BalanceResponse(
 
 data class CardsResponse(
     val cards: List<Long>?,
+    val reason: String? = null
+)
+
+data class RegistrationResponse(
+    val successful: Boolean,
     val reason: String? = null
 )

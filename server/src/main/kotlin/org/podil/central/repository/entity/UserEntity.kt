@@ -5,10 +5,8 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "cards")
-data class CardEntity(
-    @Id val id: Long,
-    val userId: Int,
-    val pin: Int,
-    val balance: Long
+@Table(name = "users")
+data class UserEntity(
+    @Id
+    val id: Int
 )

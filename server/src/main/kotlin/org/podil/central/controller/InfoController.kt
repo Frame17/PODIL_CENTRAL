@@ -15,5 +15,5 @@ class InfoController @Autowired constructor(
     fun balance(@RequestParam("id") cardId: Long) = infoService.balance(cardId)
 
     @GetMapping("cards")
-    fun cards(@RequestParam("id") userId: Long) = infoService.cards(userId)
+    fun cards(@RequestParam("id") userId: Int) = infoService.cards(userId)
 }

@@ -21,7 +21,7 @@ class InfoService @Autowired constructor(
             }
             .orElse(BalanceResponse(null, CARD_NOT_FOUND))
 
-    fun cards(userId: Long): CardsResponse =
+    fun cards(userId: Int): CardsResponse =
         cardRepository
             .findAllByUserId(userId)
             .map {
