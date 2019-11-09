@@ -13,5 +13,7 @@ class AuthorizationController(
 
     @PostMapping("auth")
     fun auth(@RequestBody authRequest: AuthorizationRequest) =
-        authorizationService.auth(authRequest)
+        authRequest.run {
+            authorizationService.auth(cardId, pin)
+        }
 }

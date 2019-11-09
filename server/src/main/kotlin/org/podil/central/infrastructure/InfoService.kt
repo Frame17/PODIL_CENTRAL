@@ -1,7 +1,9 @@
 package org.podil.central.infrastructure
 
 import org.podil.central.model.BalanceResponse
+import org.podil.central.model.CARD_NOT_FOUND
 import org.podil.central.model.CardsResponse
+import org.podil.central.model.USER_NOT_FOUND
 import org.podil.central.repository.CardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,7 +19,7 @@ class InfoService @Autowired constructor(
             .map {
                 BalanceResponse(it.balance)
             }
-            .orElse(BalanceResponse(null, "Card Not Found"))
+            .orElse(BalanceResponse(null, CARD_NOT_FOUND))
 
     fun cards(userId: Long): CardsResponse =
         cardRepository
@@ -29,5 +31,5 @@ class InfoService @Autowired constructor(
                     CardsResponse(cards)
                 }
             }
-            .orElse(CardsResponse(null, "User Not Found"))
+            .orElse(CardsResponse(null, USER_NOT_FOUND))
 }

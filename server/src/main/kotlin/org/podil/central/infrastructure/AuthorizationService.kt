@@ -1,7 +1,8 @@
 package org.podil.central.infrastructure
 
-import org.podil.central.model.AuthorizationRequest
 import org.podil.central.model.AuthorizationResponse
+import org.podil.central.model.CARD_NOT_FOUND
+import org.podil.central.model.WRONG_PIN
 import org.podil.central.repository.CardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,13 +12,13 @@ class AuthorizationService @Autowired constructor(
     private val cardRepository: CardRepository
 ) {
 
-    fun auth(authRequest: AuthorizationRequest): AuthorizationResponse =
+    fun auth(cardId: Long, pin: Int): AuthorizationResponse =
         cardRepository
-            .findById(authRequest.cardId)
+            .findById(cardId)
             .map {
-                it.takeIf { it.pin == authRequest.pin }
+                it.takeIf { it.pin == pin }
                     ?.let { AuthorizationResponse(true) }
-                    ?: AuthorizationResponse(false, "Wrong Pin")
+                    ?: AuthorizationResponse(false, WRONG_PIN)
             }
-            .orElse(AuthorizationResponse(false, "Card Not Found"))
+            .orElse(AuthorizationResponse(false, CARD_NOT_FOUND))
 }
