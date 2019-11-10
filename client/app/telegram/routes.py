@@ -1,7 +1,8 @@
 from telebot.types import Update
 from flask import request, Response
 
-from . import telegram, bot
+from . import telegram
+from .bot import bot
 
 
 @telegram.route('/telegram/web_hook/', methods=['POST'])
