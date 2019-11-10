@@ -33,18 +33,17 @@ class TransactionService @Autowired constructor(
     fun transfer(fromId: Long, toId: Long, amount: Long): TransferResponse =
         withdraw(fromId, amount)
             .run {
-                takeIf { it.successful }
-                    ?.run {
-                        deposit(toId, amount)
-                            .takeIf { it.successful }
-                            ?.run {
-                                TransferResponse(true, balance, amount)
-                            }
-                            ?: run {
-                                deposit(fromId, amount)
-                                TransferResponse(false, null, amount, "$toId - $CARD_NOT_FOUND")
-                            }
+                takeIf {
+                    it.successful
+                }?.let {
+                    deposit(toId, amount)
+                        .takeIf { it.successful }
+                        ?.run {
+                            TransferResponse(true, it.balance, amount)
+                        } ?: run {
+                        deposit(fromId, amount)
+                        TransferResponse(false, null, amount, "Card id $toId - $CARD_NOT_FOUND")
                     }
-                    ?: TransferResponse(false, null, amount, "Card id $fromId - $reason")
+                } ?: TransferResponse(false, null, amount, "Card id $fromId - $reason")
             }
 }
