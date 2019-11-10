@@ -17,7 +17,7 @@ def create_app():
 
     configure_logging()
 
-    from .bot import telegram
+    from .telegram import telegram
 
     app.register_blueprint(telegram)
 
