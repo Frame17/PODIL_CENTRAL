@@ -1,15 +1,19 @@
+import os
+
+import requests
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 from app.telegram.bot import texts, bot
-from app.telegram.models.User import UserState
-from app.telegram.models.UserStates.Deposit import Deposit
-from app.telegram.models.UserStates.Withdraw import Withdraw
+from app.telegram.user.User import UserState
+from app.telegram.user.user_states.Deposit import Deposit
+from app.telegram.user.user_states.Withdraw import Withdraw
 
 
 class CardMenu(UserState):
 
     def send_menu(self) -> None:
-        # TODO: request to server
+        r = self.user.get_balance()
+
 
         buttons = InlineKeyboardMarkup()
 
@@ -20,10 +24,10 @@ class CardMenu(UserState):
             InlineKeyboardButton(text="Вийти", callback_data='exit ')
         )
 
-        bot.send_message(self.user.tg_id, texts.card_menu.format("**** **** **** 1111", "200"), reply_markup=buttons)
+        bot.send_message(self.user.tg_id, texts.card_menu.format("**** **** **** " + self.user.cur_card[-4:], r["balance"]), reply_markup=buttons)
 
     def handle_button(self, call: CallbackQuery) -> None:
-        from app.telegram.models.UserStates.StartMenu import StartMenu
+        from app.telegram.user.user_states.StartMenu import StartMenu
         expected_buttons = ["withdraw", "deposit", "transfer", "exit"]
 
         cur_button, card_id = call.data.split(' ')

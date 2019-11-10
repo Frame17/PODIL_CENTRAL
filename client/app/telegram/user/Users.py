@@ -1,5 +1,5 @@
-from app.telegram.models.SingletonMeta import SingletonMeta
-from app.telegram.models.User import User
+from app.telegram.user.utils.SingletonMeta import SingletonMeta
+from app.telegram.user.User import User
 
 
 class Users(metaclass=SingletonMeta):

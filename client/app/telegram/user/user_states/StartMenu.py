@@ -1,8 +1,8 @@
 from telebot.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.telegram.bot import texts, bot
-from app.telegram.models.UserStates.ChooseCard import ChooseCard
-from app.telegram.models.User import UserState
+from app.telegram.user.user_states.ChooseCard import ChooseCard
+from app.telegram.user.User import UserState
 
 
 class StartMenu(UserState):
@@ -27,7 +27,7 @@ class StartMenu(UserState):
         if cur_button in self._buttons:
             bot.delete_message(self.user.tg_id, call.message.message_id)
             if cur_button == "create_card":
-                from app.telegram.models.UserStates.NewCard import NewCard
+                from app.telegram.user.user_states.NewCard import NewCard
                 self.user.transition_to(NewCard())
 
             elif cur_button == "my_cards":

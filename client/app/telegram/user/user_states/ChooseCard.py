@@ -1,20 +1,33 @@
+import json
+import os
+
+import requests
 from telebot.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 from app.telegram.bot import texts, bot
-from app.telegram.models.UserStates.WaitPass import WaitPass
-from app.telegram.models.User import UserState
+from app.telegram.user.user_states.OperationNotOk import OperationNotOk
+from app.telegram.user.user_states.WaitPass import WaitPass
+from app.telegram.user.User import UserState
 
 
 class ChooseCard(UserState):
     def send_menu(self) -> None:
-        # TODO: send request to server to create cart
 
-        cards = ["1234 1234 1234 1234", "1234 1234 1234 5555", "1234 1234 1234 6545"]
+        r = requests.get(os.getenv("SERVER_URL") + 'cards?id=' + str(self.user.tg_id))
+
+        content = json.loads(r.content)
+
+        try:
+            cards = [str(x) for x in content["cards"]]
+        except Exception as e:
+            self.user.transition_to(OperationNotOk(content["reason"]))
+            return
 
         buttons = InlineKeyboardMarkup()
         for card in cards:
             buttons.add(
-                InlineKeyboardButton(text="**** **** **** " + card[-4:], callback_data='choose_card ' + str(1))
+                InlineKeyboardButton(text="**** **** **** " + card[-4:],
+                                     callback_data='choose_card ' + card)
             )
 
         msg_text = 'Оберіть карту...' if len(cards) > 0 else texts.card_limit

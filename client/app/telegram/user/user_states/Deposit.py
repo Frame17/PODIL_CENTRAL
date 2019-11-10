@@ -1,30 +1,39 @@
 from telebot.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.telegram.bot import texts, bot
-from app.telegram.models.User import UserState
+from app.telegram.user.User import UserState
 
 
-class Withdraw(UserState):
+class Deposit(UserState):
     _msg_id = None
 
     def send_menu(self) -> None:
 
+        r = self.user.get_balance()
         buttons = InlineKeyboardMarkup()
 
         buttons.add(
             InlineKeyboardButton(text="Назад", callback_data='back ')
         )
 
-        self._msg_id = bot.send_message(self.user.tg_id, "Ведіть сумму", reply_markup=buttons).message_id
+        self._msg_id = bot.send_message(self.user.tg_id, texts.deposit.format(r["balance"]), reply_markup=buttons).message_id
 
     def handle_message_text(self, msg: Message) -> None:
         bot.delete_message(self.user.tg_id, self._msg_id)
         try:
-            withdraw_sum = int(msg.text)
+            amount = int(msg.text)
 
-            # TODO: request to server
-            from app.telegram.models.UserStates.OperationNotOk import OperationNotOk
-            self.user.transition_to(OperationNotOk())
+            r = self.user.do_deposit(amount)
+
+            if r.get("successful", None):
+                from app.telegram.user.user_states.OperationOk import OperationOk
+                self.user.transition_to(OperationOk("deposit"))
+            elif r.get("successful", None) == False:
+                from app.telegram.user.user_states.OperationNotOk import OperationNotOk
+                self.user.transition_to(OperationNotOk(r["reason"]))
+            else:
+                from app.telegram.user.user_states.OperationNotOk import OperationNotOk
+                self.user.transition_to(OperationNotOk("Hvatit balovacca!"))
         except ValueError:
             buttons = InlineKeyboardMarkup()
 
@@ -40,7 +49,7 @@ class Withdraw(UserState):
         if cur_button in expected_buttons:
             bot.delete_message(self.user.tg_id, call.message.message_id)
             if cur_button == "back":
-                from app.telegram.models.UserStates.CardMenu import CardMenu
+                from app.telegram.user.user_states.CardMenu import CardMenu
                 self.user.transition_to(CardMenu())
 
     def handle_command(self, msg: Message) -> None:

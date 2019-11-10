@@ -1,10 +1,15 @@
+import json
 import logging
+import os
+
+import requests
+from flask import request
 from telebot.types import CallbackQuery, Message
 
 from app.telegram.bot import bot
-from app.telegram.models.UserStates.StartMenu import StartMenu
-from app.telegram.models.User import User
-from app.telegram.models.Users import Users
+from app.telegram.user.user_states.StartMenu import StartMenu
+from app.telegram.user.User import User
+from app.telegram.user.Users import Users
 
 logger = logging.getLogger(__name__)
 
@@ -17,14 +22,16 @@ def start_handler(msg: Message):
 
     logger.debug(msg)
 
-    if users.get_user_by_tg_id(msg.from_user.id):
-        return
+    tg_id = msg.from_user.id
 
-    # TODO: send request to server
+    r = requests.get(os.getenv('SERVER_URL') + 'register?id=' + str(tg_id))
 
-    user = User(msg.from_user.id, msg.from_user.first_name or '', msg.from_user.last_name or '', StartMenu())
-    users.add_user(user)
-    user.command_request(msg)
+    logger.debug(r.content)
+
+    if json.loads(r.content)["successful"] or True:
+        user = User(msg.from_user.id, msg.from_user.first_name or '', msg.from_user.last_name or '', StartMenu())
+        users.add_user(user)
+        user.command_request(msg)
 
 
 @bot.message_handler(regexp=r'^/+')
