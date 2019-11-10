@@ -6,10 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.podil.central.model.BalanceResponse
-import org.podil.central.model.CARD_NOT_FOUND
-import org.podil.central.model.CardsResponse
-import org.podil.central.model.USER_NOT_FOUND
+import org.podil.central.model.*
 import org.podil.central.repository.CardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -79,7 +76,7 @@ class InfoIntegrationTest {
             CardsResponse::class.java
         ).run {
             assertEquals(null, cards)
-            assertEquals(USER_NOT_FOUND, reason)
+            assertEquals(NO_CARDS_4_THIS_USER, reason)
         }
     }
 }

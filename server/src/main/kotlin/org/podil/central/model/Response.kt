@@ -4,6 +4,7 @@ const val CARD_NOT_FOUND = "Card Not Found"
 const val LOW_BALANCE = "Low Balance"
 const val WRONG_PIN = "Wrong Pin"
 const val USER_NOT_FOUND = "User Not Found"
+const val NO_CARDS_4_THIS_USER = "This user has no cards"
 const val USER_ALREADY_REGISTERED = "User Already Registered"
 
 data class AuthorizationResponse(
