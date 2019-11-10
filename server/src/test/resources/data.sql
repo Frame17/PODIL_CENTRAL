@@ -1,0 +1,1 @@
+insert into cards (id, balance, pin, user_id) values (17, 0, 1234, 5), (18, 0, 4321, 5)
