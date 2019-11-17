@@ -14,4 +14,8 @@ class RegistrationController @Autowired constructor(
     @GetMapping("register")
     fun register(@RequestParam id: Int) =
         registrationService.register(id)
+
+    @GetMapping("generate-card")
+    fun cardGen(@RequestParam id: Int) =
+        registrationService.generateCard(id)
 }
