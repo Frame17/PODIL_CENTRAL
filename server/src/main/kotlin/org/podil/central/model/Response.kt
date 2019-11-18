@@ -6,6 +6,7 @@ const val WRONG_PIN = "Wrong Pin"
 const val USER_NOT_FOUND = "User Not Found"
 const val NO_CARDS_4_THIS_USER = "This user has no cards"
 const val USER_ALREADY_REGISTERED = "User Already Registered"
+const val CARD_LIMIT_REACHED = "Reached card limit"
 
 data class AuthorizationResponse(
     val success: Boolean,
@@ -50,6 +51,8 @@ data class RegistrationResponse(
 )
 
 data class CardGenResponse(
-    val id: Long,
-    val pin: Int
+    val successful: Boolean,
+    val id: Long?,
+    val pin: Int?,
+    val reason: String? = null
 )
