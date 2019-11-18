@@ -30,21 +30,22 @@ class Transfer(UserState):
                 self.user.transition_to(CardMenu())
 
     def handle_message_text(self, msg: Message) -> None:
+        bot.delete_message(self.user.tg_id, self._msg_id)
         if not self._amount:
-            bot.delete_message(self.user.tg_id, self._msg_id)
             try:
                 amount = int(msg.text)
 
                 if int(self.user.get_balance()["balance"]) - amount < 0:
                     from app.telegram.user.user_states.OperationNotOk import OperationNotOk
                     self.user.transition_to(OperationNotOk("Low balance!"))
-                self._amount = amount
-                buttons = InlineKeyboardMarkup()
-                buttons.add(
-                    InlineKeyboardButton(text="Назад", callback_data='back ')
-                )
+                else:
+                    self._amount = amount
+                    buttons = InlineKeyboardMarkup()
+                    buttons.add(
+                        InlineKeyboardButton(text="Назад", callback_data='back ')
+                    )
 
-                self._msg_id = bot.send_message(self.user.tg_id, texts.transfer_2, reply_markup=buttons).message_id
+                    self._msg_id = bot.send_message(self.user.tg_id, texts.transfer_2, reply_markup=buttons).message_id
             except ValueError:
                 buttons = InlineKeyboardMarkup()
                 buttons.add(InlineKeyboardButton(text="Назад", callback_data='back '))

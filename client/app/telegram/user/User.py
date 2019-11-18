@@ -14,7 +14,8 @@ class User(object):
     _state = None
     _cur_card: int = None
 
-    def __init__(self, tg_id, state: UserState) -> None:
+    def __init__(self, tg_id, state: UserState, name) -> None:
+        self.name = name
         self.tg_id = tg_id
         self.transition_to(state)
 
@@ -67,7 +68,7 @@ class User(object):
             "cardId": self.cur_card,
             "amount": amount
         }
-        res = requests.post(os.getenv("SERVER_URL") + "withdraw", json=data)
+        res = requests.post(os.getenv("SERVER_URL") + "deposit", json=data)
 
         res_dict = json.loads(res.content)
 
@@ -96,7 +97,7 @@ class User(object):
             self.transition_to(OperationNotOk(res_dict["reason"]))
         else:
             self.transition_to(OperationOk('transfer'))
-            # bot.send_message(res_dict['tg_id'], "")
+            bot.send_message(res_dict['sentTo'], "{}, надіслав вам {} на карту <code>{}</code>".format(self.name, amount, to_card))
 
     def do_card_auth(self, pin):
         from app.telegram.user.user_states.OperationNotOk import OperationNotOk
@@ -108,7 +109,7 @@ class User(object):
         r = requests.post(os.getenv("SERVER_URL") + "auth", json=data)
         res_dict = json.loads(r.content)
 
-        if "successful" not in res_dict.keys():
+        if "success" not in res_dict.keys():
             self.transition_to(OperationNotOk("You shall not pass! Server good protected!"))
         return res_dict
 

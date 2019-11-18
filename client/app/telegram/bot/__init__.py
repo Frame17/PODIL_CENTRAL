@@ -12,6 +12,7 @@ class Bot(TeleBot):
 
 
 bot = Bot(os.getenv('BOT_TOKEN'))
+
 bot.set_webhook(os.getenv('NGROK_URL') + '/telegram/web_hook/')
 
 from app.telegram.bot import handlers

@@ -22,9 +22,9 @@ class NewCard(UserState):
             InlineKeyboardButton(text="Зрозуміло", callback_data='exit ')
         )
 
-        r = requests.get(os.getenv("SERVER_URL") + "generate-card?id=" + self.user.tg_id)
+        r = requests.get(os.getenv("SERVER_URL") + "generate-card?id=" + str(self.user.tg_id))
 
-        res_dict = json.loads(r)
+        res_dict = json.loads(r.content)
 
         if not res_dict.get("successful"):
             bot.answer_callback_query(callback_query_id=self._call.id, show_alert=True, text=res_dict["reason"])
