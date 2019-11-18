@@ -36,14 +36,15 @@ class TransactionService @Autowired constructor(
                 takeIf {
                     it.successful
                 }?.let {
-                    deposit(toId, amount)
-                        .takeIf { it.successful }
-                        ?.run {
-                            TransferResponse(true, it.balance, amount)
-                        } ?: run {
-                        deposit(fromId, amount)
-                        TransferResponse(false, null, amount, "Card id $toId - $CARD_NOT_FOUND")
-                    }
-                } ?: TransferResponse(false, null, amount, "Card id $fromId - $reason")
+                    cardRepository
+                        .findById(toId)
+                        .map {
+                            TransferResponse(true, it.balance, amount, it.userId)
+                        }
+                        .orElseGet {
+                            deposit(fromId, amount)
+                            TransferResponse(false, null, amount, null, "Card id $toId - $CARD_NOT_FOUND")
+                        }
+                } ?: TransferResponse(false, null, amount, null, "Card id $fromId - $reason")
             }
 }

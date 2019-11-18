@@ -30,6 +30,7 @@ data class TransferResponse(
     val successful: Boolean,
     val balance: Long?,
     val amount: Long,
+    val sentTo: Int?,
     val reason: String? = null
 )
 
