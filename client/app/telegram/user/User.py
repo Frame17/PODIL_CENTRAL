@@ -7,6 +7,8 @@ from abc import ABC, abstractmethod
 import requests
 from telebot.types import CallbackQuery, Message
 
+from app.telegram.bot import bot
+
 
 class User(object):
     _state = None
@@ -75,6 +77,26 @@ class User(object):
             self.transition_to(OperationNotOk(res_dict["reason"]))
         else:
             self.transition_to(OperationOk('deposit'))
+
+    def do_transfer(self, amount, to_card):
+        from app.telegram.user.user_states.OperationNotOk import OperationNotOk
+        from app.telegram.user.user_states.OperationOk import OperationOk
+        data = {
+            "fromId": self.cur_card,
+            "toId": to_card,
+            "amount": amount
+        }
+        res = requests.post(os.getenv("SERVER_URL") + "transfer", json=data)
+
+        res_dict = json.loads(res.content)
+
+        if "successful" not in res_dict.keys():
+            self.transition_to(OperationNotOk("You shall not pass! Server good protected!"))
+        elif not res_dict.get("successful"):
+            self.transition_to(OperationNotOk(res_dict["reason"]))
+        else:
+            self.transition_to(OperationOk('transfer'))
+            # bot.send_message(res_dict['tg_id'], "")
 
     def do_card_auth(self, pin):
         from app.telegram.user.user_states.OperationNotOk import OperationNotOk

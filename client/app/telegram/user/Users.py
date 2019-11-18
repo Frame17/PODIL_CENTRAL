@@ -1,8 +1,7 @@
-from app.telegram.user.utils.SingletonMeta import SingletonMeta
 from app.telegram.user.User import User
 
 
-class Users(metaclass=SingletonMeta):
+class Users(object):
     def __init__(self):
         self._users = []
 
