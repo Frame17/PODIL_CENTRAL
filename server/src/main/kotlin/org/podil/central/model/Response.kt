@@ -47,3 +47,8 @@ data class RegistrationResponse(
     val successful: Boolean,
     val reason: String? = null
 )
+
+data class CardGenResponse(
+    val id: Long,
+    val pin: Int
+)
