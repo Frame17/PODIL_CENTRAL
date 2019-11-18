@@ -28,7 +28,7 @@ def start_handler(msg: Message):
     logger.debug(r.content)
 
     if json.loads(r.content)["successful"] or True:
-        user = User(msg.from_user.id, StartMenu())
+        user = User(msg.from_user.id, StartMenu(), msg.from_user.first_name + ' ' + (msg.from_user.last_name or ' '))
         users.add_user(user)
 
 

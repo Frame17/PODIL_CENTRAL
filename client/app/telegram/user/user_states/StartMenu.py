@@ -28,7 +28,7 @@ class StartMenu(UserState):
             bot.delete_message(self.user.tg_id, call.message.message_id)
             if cur_button == "create_card":
                 from app.telegram.user.user_states.NewCard import NewCard
-                self.user.transition_to(NewCard())
+                self.user.transition_to(NewCard(call))
 
             elif cur_button == "my_cards":
                 self.user.transition_to(ChooseCard())
