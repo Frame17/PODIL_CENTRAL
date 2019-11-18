@@ -20,7 +20,7 @@ class User(object):
         self.transition_to(state)
 
     def transition_to(self, state: UserState) -> None:
-        print(f"Context: Transition to {type(state).__name__}")
+        print(f"{self.name} Context: Transition to {type(state).__name__}")
         self._state = state
         self._state.user = self
         self._state.send_menu()
