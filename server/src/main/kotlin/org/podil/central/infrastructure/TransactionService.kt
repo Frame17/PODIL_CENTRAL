@@ -38,8 +38,9 @@ class TransactionService @Autowired constructor(
                 }?.let {
                     cardRepository
                         .findById(toId)
-                        .map {
-                            TransferResponse(true, it.balance, amount, it.userId)
+                        .map {card ->
+                            cardRepository.updateCardById(card.id, card.balance + amount)
+                            TransferResponse(true, it.balance, amount, card.userId)
                         }
                         .orElseGet {
                             deposit(fromId, amount)
