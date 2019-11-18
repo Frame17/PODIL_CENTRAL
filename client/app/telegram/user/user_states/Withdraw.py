@@ -24,20 +24,8 @@ class Withdraw(UserState):
         bot.delete_message(self.user.tg_id, self._msg_id)
         try:
             amount = int(msg.text)
-
-            r = self.user.do_withdraw(amount)
-
-            if r.get("successful", None):
-                from app.telegram.user.user_states.OperationOk import OperationOk
-                self.user.transition_to(OperationOk("withdraw"))
-            elif r.get("successful", None) == False:
-                from app.telegram.user.user_states.OperationNotOk import OperationNotOk
-                self.user.transition_to(OperationNotOk(r["reason"]))
-            else:
-                from app.telegram.user.user_states.OperationNotOk import OperationNotOk
-                self.user.transition_to(OperationNotOk("Hvatit balovacca!"))
+            self.user.do_withdraw(amount)
         except ValueError as e:
-            print(e)
             buttons = InlineKeyboardMarkup()
 
             buttons.add(

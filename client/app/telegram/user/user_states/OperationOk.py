@@ -37,6 +37,3 @@ class OperationOk(UserState):
             if cur_button == "exit":
                 from app.telegram.user.user_states.StartMenu import StartMenu
                 self.user.transition_to(StartMenu())
-
-    def handle_command(self, msg: Message) -> None:
-        pass

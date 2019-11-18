@@ -33,8 +33,5 @@ class StartMenu(UserState):
             elif cur_button == "my_cards":
                 self.user.transition_to(ChooseCard())
 
-    def handle_command(self, msg: Message) -> None:
-        pass
-
     def handle_message_text(self, msg: Message) -> None:
         pass

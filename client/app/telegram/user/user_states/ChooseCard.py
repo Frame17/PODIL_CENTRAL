@@ -46,5 +46,3 @@ class ChooseCard(UserState):
                 self.user.cur_card = card_id
                 self.user.transition_to(WaitPass())
 
-    def handle_command(self, msg: Message) -> None:
-        pass

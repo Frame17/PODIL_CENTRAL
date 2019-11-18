@@ -42,8 +42,6 @@ class CardMenu(UserState):
             elif cur_button == "exit":
                 self.user.transition_to(StartMenu())
 
-    def handle_command(self, msg: Message) -> None:
-        pass
 
     def handle_message_text(self, msg: Message) -> None:
 
